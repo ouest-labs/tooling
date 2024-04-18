@@ -1,0 +1,42 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          token: ${{secrets.GH_PAT}}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+            version: 9.0.1
+      - name: Setup Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+            node-version: 20
+            cache: "pnpm"
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Authenticate with npm
+        run:
+          echo "//registry.npmjs.org/:_authToken=${{secrets.NPM_TOKEN_CI}}" > ~/.npmrc
+      - name: Publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: pnpm release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN_CI }}

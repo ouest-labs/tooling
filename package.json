@@ -1,0 +1,23 @@
+{
+  "name": "tooling",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "release": "pnpm changeset version && pnpm changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.1",
+    "@ouest-labs/eslint-config": "workspace:*",
+    "@ouest-labs/ts-config": "workspace:*",
+    "@ouest-labs/tw-config": "workspace:*",
+    "prettier": "^3.2.5",
+    "turbo": "latest"
+  },
+  "packageManager": "pnpm@9.0.1",
+  "engines": {
+    "node": ">=18"
+  }
+}

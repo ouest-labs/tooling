@@ -1,0 +1,3 @@
+{
+  "extends": "@ouest-labs/ts-config/base.json"
+}
